@@ -61,7 +61,7 @@ button {
     padding: 10px 20px;
     font-size: clamp(1.2rem, 2vw, 2rem);
     font-family: "Nunito", serif;
-    background-color: var(--light-beige);
+    background-color: var(--dark-beige);
     border: none;
     border-radius: 10px;
     cursor:pointer;
@@ -234,6 +234,10 @@ footer p {
 
 #Home h2 {
     margin-top: 40px;
+}
+
+#hero-section button {
+    background-color: var(--light-beige);
 }
 
 /* Category Cards (Home page — Cats / Dogs) */
@@ -709,7 +713,68 @@ footer p {
 }
 
 /* ------------- Product Detail ------------- */
+.detail-content {
+    display: flex;
+    gap: 10px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
 
+.product-img {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}
+
+.product-img-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+
+
+#Product-detail button {
+    font-size: 12px;
+    transition: background-color 0.2s;
+    padding: 5px 10px;
+    height: auto;
+}
+
+#Product-detail button:hover { 
+    background-color: var(--darkest-beige); 
+}
+.product-variants button:active { 
+    transform: scale(0.98); 
+}
+
+.add-cart-functions {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.quantity {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 20px 0;
+    gap: 5px;
+    width: 50%;
+}
+.quantity input{
+    width: 50%;
+    height: fit-content;
+}
+.quantity button {
+    margin-top: 0;
+}
+
+.add-button button{
+width: 100%;
+}
+
+/* ------------- Shopping Cart ------------- */
 .cart-section {
     padding: 20px 0;
 }

@@ -4,51 +4,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Detail</title>
+    <!--  CSS  -->
     <link rel="stylesheet" href="style.css">
+    <!--  Google Fonts  -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Asul:wght@400;700&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=WindSong:wght@400;500&display=swap" rel="stylesheet">
+
 </head>
-<body>
+<body id="Product-detail">
     <header>
 
     </header>
 
     <main>
+        <h1>Product Name</h1>
 
         <!-- Product Detail Section -->
-        <section>
+        <section class="detail-content">
             <!-- Product Image with carousel -->
-            <div>
-            <img src="product-image.jpg" alt="Product Name">
-            <div>
-                <button>Prev</button>
-                <button>Next</button>
-            </div>
+            <div class="product-img">
+                <img src="images/product_img/dog_food_1.png" alt="Product Name">
+                <div class="product-img-buttons">
+                    <button>Prev</button>
+                    <button>Next</button>
+                </div>
             </div>
 
             <!-- Product Info -->
-            <div>
-                <h1>Product Name</h1>
+            <div class="product-info">
                 <p>$99.99</p>
                 <p>Type: Beef & Vegie</p>
 
                 <!-- Variants -->
-                <div>
+                <div class="product-variants">
                     <button>Salmon</button>
                     <button>Chicken</button>
                     <button>Beef & Vegie</button>
                 </div>
-
-                <!-- Quantity + Add to Cart -->
-                <div>
-                    <button>-</button>
-                    <input type="number" value="1" min="1">
-                    <button>+</button>
-                    <button>Add to Cart</button>
-                </div>
             </div>
         </section>
 
+        <!-- Quantity + Add to Cart -->
+        <div class="add-cart-functions">
+            <div class="quantity">
+                <button>-</button>
+                <input type="number" value="1" min="1">
+                <button>+</button>
+            </div>
+            <div class="add-button">
+                <button>Add to Cart</button>
+            </div>
+        </div>
+
         <!-- Accordion Sections -->
-        <section>
+        <section class="product-description">
             <details>
                 <summary>Ingredients</summary>
                 <p>Ingredients details go here.</p>
@@ -62,13 +72,14 @@
         <!-- Related Products -->
         <section>
             <h2>Related Products</h2>
-            <article>
-            <img src="related-product.jpg" alt="Dog Food Product">
-            <div>
-                <h3>Dog Food Product Name</h3>
-                <p>$99.99</p>
-                <del>$109.99</del>
-            </div>
+            <article class="product-card product-card-row">
+                <div class="product-card-img">
+                    <img src="dog-food.jpg" alt="Dog Food Product" >
+                </div>
+                <div class="product-card-info">
+                    <h3>Dog Food Product Name</h3>
+                    <p class="price">$99.99</p>
+                </div>
             </article>
         </section>
     </main>
