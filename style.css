@@ -2,7 +2,7 @@
 :root {
     --white: rgba(255, 255, 255, 1);
     --light-beige: rgba(192, 175, 159, 1);
-    --grey-beige: rgba(240, 235, 227, 1);
+    --grey-beige: rgb(235, 223, 205);
     --dark-beige: rgba(170, 143, 122, 1);
     --darkest-beige: rgba(74, 55, 40, 1);
     --black: rgba(10, 10, 10, 1);
@@ -338,7 +338,7 @@ footer p {
 #home-banner {
     display: flex;
     align-items: stretch;
-    margin: 0 -20px;;
+    margin: 0 -20px;
     background-color: var(--grey-beige);
     border: 1px solid rgba(0,0,0,0.08);
     overflow: hidden;
@@ -392,10 +392,7 @@ footer p {
 
 .home-image-end {
     display: block;
-    width: 100vw;
-    margin-left: -20px;  /* cancel main padding, adjust to match your padding value */
-    margin-right: -20px;
-    margin-bottom: 0;
+    margin: 0 -20px;
 }
 
 /* ------------- Menu Page ------------- */
@@ -1134,4 +1131,252 @@ details p {
 .recommended-section h2 {
     font-size: clamp(1.4rem, 2vw, 2rem);
     margin-bottom: 16px;
+}
+
+/* ------------- Payment Page ------------- */
+
+#payment-page main {
+    max-width: 480px;
+    margin: 0 auto;
+    padding-bottom: 48px;
+}
+
+#payment-page h1 {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    margin: 12px 0 20px;
+    text-align: center;
+}
+
+/* White card sections */
+.payment-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+}
+
+.payment-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.payment-card-header h2 {
+    text-align: left;
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--darkest-beige);
+}
+
+.summary-badge {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--dark-beige);
+    background: var(--grey-beige);
+    border-radius: 20px;
+    padding: 3px 10px;
+}
+
+/* Order Summary Items */
+.summary-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--grey-beige);
+}
+
+.summary-item .price {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--darkest-beige);
+    margin: 0;
+    flex-shrink: 0;
+    margin-left: 12px;
+}
+
+.summary-item-info {
+    flex: 1;
+}
+
+.summary-item-name {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--darkest-beige);
+    margin: 0;
+}
+
+.summary-item-detail {
+    font-size: 0.8rem;
+    color: var(--dark-beige);
+    margin: 2px 0 0;
+}
+
+.summary-divider {
+    height: 1px;
+    background: var(--light-beige);
+    margin: 10px 0 4px;
+}
+
+.summary-total-row {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.9rem;
+    color: var(--darkest-beige);
+    padding: 5px 0;
+}
+
+.free-shipping {
+    color: #5a8050;
+    font-weight: 700;
+}
+
+.summary-grand-total {
+    font-weight: 800;
+    font-size: 1rem;
+    border-top: 1px solid var(--light-beige);
+    padding-top: 10px;
+    margin-top: 4px;
+}
+
+/* Form Groups */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 14px;
+}
+
+.form-group:last-child {
+    margin-bottom: 0;
+}
+
+.form-group label {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--darkest-beige);
+    margin-bottom: 6px;
+}
+
+.form-group input {
+    border: 1.5px solid var(--grey-beige);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.9rem;
+    background: var(--grey-beige);
+    color: var(--darkest-beige);
+    outline: none;
+    box-sizing: border-box;
+    width: 100%;
+    transition: border-color 0.15s, background 0.15s;
+}
+
+.form-group input::placeholder {
+    color: var(--light-beige);
+}
+
+.form-group input:focus {
+    border-color: var(--dark-beige);
+    background: var(--white);
+}
+
+/* Payment Method Tabs */
+.payment-method-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.method-tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 10px;
+    border: 1.5px solid var(--light-beige);
+    border-radius: 12px;
+    background: var(--grey-beige);
+    color: var(--dark-beige);
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    height: auto;
+    margin-top: 0;
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
+    max-width: 100%;
+}
+
+.method-tab:hover {
+    border-color: var(--dark-beige);
+    color: var(--darkest-beige);
+}
+
+.method-tab-active {
+    border-color: var(--darkest-beige);
+    background: var(--white);
+    color: var(--darkest-beige);
+}
+
+.payment-hidden {
+    display: none;
+}
+
+.paypal-note {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.9rem;
+    color: var(--dark-beige);
+    text-align: center;
+    padding: 16px 0 4px;
+    margin: 0;
+}
+
+/* Place Order Button */
+.place-order-btn {
+    width: 100%;
+    background: var(--darkest-beige);
+    color: var(--white);
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 700;
+    height: 52px;
+    margin-top: 4px;
+    margin-bottom: 12px;
+    max-width: 100%;
+    transition: background 0.15s;
+}
+
+.place-order-btn:hover {
+    background: var(--dark-beige);
+}
+
+/* Back to Cart Link */
+.back-link {
+    text-align: center;
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+    margin-top: 0;
+}
+
+.back-link a {
+    color: var(--dark-beige);
+    text-decoration: none;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+}
+
+.back-link a:hover {
+    color: var(--darkest-beige);
 }
