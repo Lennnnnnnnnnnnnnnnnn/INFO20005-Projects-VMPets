@@ -2,7 +2,9 @@
 function initHeader() {
     document.querySelector('header').innerHTML = `
         <nav>
-            <p class="brand-logo">VM Pet Shop</p>
+            <a href="index.html">
+                <p class="brand-logo">VM Pet Shop</p>
+            </a>
             <div class="nav-icons">
                 <a href="menu.html">
                     <img id="menu-icon" src="images/icons/Menu.svg" alt="Menu button">
@@ -38,6 +40,15 @@ function initFooter() {
             <p class="footer-copy">2020 Victoria Market Pet Shop</p>
         </div>
     `;
+}
+
+// Fall back to previous page after closing menu 
+if (document.body.id === 'menu-page') {
+    const closeBtn = document.querySelector('#menu-page > img');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => history.back());
+        closeBtn.style.cursor = 'pointer';
+    }
 }
 
 // Wires up the +/- quantity buttons.
