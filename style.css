@@ -2,8 +2,9 @@
 :root {
     --white: rgba(255, 255, 255, 1);
     --light-beige: rgba(192, 175, 159, 1);
-    --grey-beige: rgb(235, 223, 205);
+    --cream: rgb(235, 223, 205);
     --dark-beige: rgba(170, 143, 122, 1);
+    --sub-texts: rgb(105, 88, 74);
     --darkest-beige: rgba(74, 55, 40, 1);
     --black: rgba(10, 10, 10, 1);
     --light-orange: rgba(255, 220, 180, 0.92);
@@ -30,7 +31,6 @@ main {
 }
 
 h1, h2, h3 {
-    justify-self: center;
     color: var(--darkest-beige);
     font-family: 'Asul', sans-serif;
     margin-left: auto;
@@ -87,7 +87,7 @@ button {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.7) 100%);
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.4) 100%);
 }
 
 /* -------------    Navigation Bar    ------------- */
@@ -391,7 +391,7 @@ footer p {
     display: flex;
     align-items: stretch;
     margin: 0 -20px;
-    background-color: var(--grey-beige);
+    background-color: var(--cream);
     border: 1px solid rgba(0,0,0,0.08);
     overflow: hidden;
 }
@@ -674,7 +674,7 @@ footer p {
 /* Page Heading */
 .page-heading {
     text-align: center;
-    margin: 0 0 40px;}
+}
 
 .page-heading h1 {
     font-weight: 600;
@@ -684,29 +684,32 @@ footer p {
 
 .product-count {
     font-size: 11px;
-    color: var(--light-beige);
+    color: var(--sub-texts);
 }
 
 /* Filter Bar */
 .filter-bar {
+    font-family: 'Nunito', serif;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 8px 14px;
     font-size: 14px;
     font-weight: 800;
-    color: var(--light-beige);
-    border-bottom: 1px solid var(--light-beige);
+    color: var(--sub-texts);
+    border-bottom: 1px solid var(--dark-beige);
     margin-bottom: 10px;
 }
 
-.filter-bar select {
+.filter-bar select,
+.filter-bar select option {
     background: transparent;
     border: none;
     font-size: 14px;
-    color: var(--dark-beige);
+    color: var(--sub-texts);
     outline: none;
     cursor: pointer;
+    font-family: 'Nunito', serif;
 }
 
 /* Product Grid */
@@ -719,7 +722,7 @@ footer p {
 
 /* Product Card */
 .product-card {
-    background: var(--white);
+    background: var(--cream);
     border-radius: 12px;
     overflow: hidden; /* hide image overflow */
     display: flex;
@@ -729,7 +732,7 @@ footer p {
 .product-card-img {
     width: 100%;
     height: 110px;
-    background: var(--grey-beige);
+    background: var(--cream);
     position: relative;
     overflow: hidden;
 }
@@ -738,6 +741,11 @@ footer p {
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+.product-card:hover .product-card-img img {
+    position: relative;
+    z-index: 1;
 }
 
 .sale-badge {
@@ -751,11 +759,12 @@ footer p {
     padding: 2px 6px;
     border-radius: 8px;
     letter-spacing: 0.5px;
+    z-index: 2;
 }
 
 .product-card-info {
     padding: 10px;
-    align-items: center;
+    text-align: left;
 }
 
 .product-card-info h3 {
@@ -764,16 +773,19 @@ footer p {
     color: #3b3027;
     margin-bottom: 4px;
     line-height: 1.3;
+    text-align: left;
+    margin-left: 0;
+    margin-right: 0;
 }
 
-.price {
-    font-size: clamp(1rem, 1.5vw, 1.5rem);
+p.price {
+    font-size: clamp(0.8rem, 2vw, 1.5rem);
     font-weight: 700;
     color: #3b3027;
 }
 
 .original-price {
-    font-size: clamp(0.75rem, 1.25vw, 1rem);
+    font-size: clamp(0.6rem, 2vw, 1rem);
     color: #9e9080;
     margin-left: 4px;
 }
@@ -899,7 +911,7 @@ footer p {
     position: relative;
     width: 100%;
     border-radius: 16px;
-    background: linear-gradient(135deg, var(--grey-beige) 0%, #e2d9ce 100%);
+    background: var(--cream);
     overflow: hidden;
     height: 260px;
     display: flex;
@@ -1047,7 +1059,7 @@ footer p {
     display: flex;
     align-items: center;
     gap: 2px;
-    background: var(--grey-beige);
+    background: var(--cream);
     border-radius: 50px;
     padding: 4px;
 }
@@ -1173,6 +1185,7 @@ details p {
     text-align: left;
     font-size: clamp(1.1rem, 2vw, 1.5rem);
     margin-bottom: 16px;
+    padding-bottom: 16px;
 }
 
 .cart-item {
@@ -1199,8 +1212,9 @@ details p {
 
 .cart-item-info h3 {
     font-size: 1rem;
-    margin-bottom: 4px;
-    text-align: left;
+    margin-bottom: 7px;
+    text-align: left;   
+    margin-top: 2px 2px;
 }
 
 .cart-item-info p {
@@ -1231,7 +1245,7 @@ details p {
 /* Order Summary */
 
 .order-summary {
-    background: var(--grey-beige);
+    background: var(--cream);
     border-radius: 16px;
     padding: 20px;
     margin: 8px 0 20px;
@@ -1339,7 +1353,7 @@ details p {
     font-size: 0.8rem;
     font-weight: 700;
     color: var(--dark-beige);
-    background: var(--grey-beige);
+    background: var(--cream);
     border-radius: 20px;
     padding: 3px 10px;
 }
@@ -1350,7 +1364,7 @@ details p {
     align-items: center;
     justify-content: space-between;
     padding: 10px 0;
-    border-bottom: 1px solid var(--grey-beige);
+    border-bottom: 1px solid var(--cream);
 }
 
 .summary-item .price {
@@ -1434,12 +1448,12 @@ details p {
 }
 
 .form-group input {
-    border: 1.5px solid var(--grey-beige);
+    border: 1.5px solid var(--cream);
     border-radius: 10px;
     padding: 10px 12px;
     font-family: 'Nunito', sans-serif;
     font-size: 0.9rem;
-    background: var(--grey-beige);
+    background: var(--cream);
     color: var(--darkest-beige);
     outline: none;
     box-sizing: border-box;
@@ -1472,7 +1486,7 @@ details p {
     padding: 12px 10px;
     border: 1.5px solid var(--light-beige);
     border-radius: 12px;
-    background: var(--grey-beige);
+    background: var(--cream);
     color: var(--dark-beige);
     font-family: 'Nunito', sans-serif;
     font-size: 0.85rem;
