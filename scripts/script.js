@@ -1,3 +1,92 @@
+// OBJECTS ---------------------------------------------------------------------------------
+
+/*-------------------------------------- Food Products--------------------------------------*/
+const products = {
+  dogs: [
+    {
+      name: "Dog Food 1",
+      price: 99.99,
+      originalPrice: 129.99,
+      image: "images/product_img/dog_food_1.png",
+      sale: true,
+      variants: ["500g", "1kg", "2kg"],
+      ingredients: "Chicken, whole grain corn, animal fat, natural flavours, vitamins & minerals.",
+      description: "Complete nutrition for adult dogs. Rich in protein with essential vitamins for a healthy coat and strong bones.",
+    },
+    {
+      name: "Dog Food 2",
+      price: 99.99,
+      originalPrice: 129.99,
+      image: "images/product_img/dog_food_2.png",
+      sale: true,
+      variants: ["1kg", "3kg"],
+      ingredients: "Beef, rice flour, vegetable oil, natural flavours, taurine, vitamins & minerals.",
+      description: "Premium beef formula for active adult dogs. Supports muscle development and sustained energy levels.",
+    },
+    {
+      name: "Dog Food 3",
+      price: 99.99,
+      image: "images/product_img/dog_food_3.png",
+      sale: false,
+      variants: ["500g", "2kg", "5kg"],
+      ingredients: "Lamb, barley, sunflower oil, flaxseed, probiotics, vitamins & minerals.",
+      description: "Gentle lamb and barley recipe ideal for dogs with sensitive stomachs. Promotes healthy digestion.",
+    },
+    {
+      name: "Dog Food 4",
+      price: 99.99,
+      image: "images/product_img/dog_food_4.png",
+      sale: false,
+      variants: ["1kg", "2kg"],
+      ingredients: "Salmon, sweet potato, pea flour, omega-3 fatty acids, vitamins & minerals.",
+      description: "Grain-free salmon formula rich in omega-3 fatty acids for a shiny coat and healthy skin.",
+    },
+  ],
+  cats: [
+    {
+      name: "Cat Food 1",
+      price: 89.99,
+      originalPrice: 109.99,
+      image: "images/product_img/cat_food_1.png",
+      sale: true,
+      variants: ["400g", "1kg"],
+      ingredients: "Chicken, fish meal, corn starch, taurine, vitamins & minerals.",
+      description: "Complete and balanced nutrition for adult cats. High in protein to support lean muscle mass.",
+    },
+    {
+      name: "Cat Food 2",
+      price: 79.99,
+      image: "images/product_img/cat_food_2.png",
+      sale: false,
+      variants: ["300g", "800g"],
+      ingredients: "Tuna, rice, sunflower oil, taurine, vitamins & minerals.",
+      description: "Delicious tuna flavour cats love. Promotes urinary tract health and supports a healthy immune system.",
+    },
+    {
+      name: "Cat Food 3",
+      price: 79.99,
+      image: "images/product_img/cat_food_3.png",
+      sale: false,
+      variants: ["300g", "800g", "2kg"],
+      ingredients: "Salmon, herring, pea protein, omega-3 fatty acids, vitamins & minerals.",
+      description: "Ocean fish blend that supports healthy vision and brain development in adult cats.",
+    },
+    {
+      name: "Cat Food 4",
+      price: 79.99,
+      image: "images/product_img/cat_food_4.png",
+      sale: false,
+      variants: ["400g", "1.2kg"],
+      ingredients: "Beef, liver, potato starch, taurine, vitamins & minerals.",
+      description: "Rich beef and liver recipe for cats who prefer red meat flavours. Supports muscle tone and vitality.",
+    },
+  ],
+};
+
+// FUNCTIONS ---------------------------------------------------------------------------------
+
+/*-------------------------------------- Header & Footer--------------------------------------*/
+
 // Injects the shared nav into every page's <header>.
 function initHeader() {
   document.querySelector("header").innerHTML = `
@@ -42,11 +131,15 @@ function initFooter() {
     `;
 }
 
+/*-------------------------------------- Menu--------------------------------------*/
+
 // Fall back to previous page after closing menu
 if (document.body.id === "menu-page") {
   const closeBtn = document.querySelector("#menu-page > img");
   closeBtn.addEventListener("click", () => history.back());
 }
+
+/*-------------------------------------- Product Detail--------------------------------------*/
 
 // Wires up the +/- quantity buttons.
 // Prevents the value from going below 1 when decrementing.
@@ -117,6 +210,8 @@ function initImageZoom() {
   });
 }
 
+/*-------------------------------------- Payment--------------------------------------*/
+
 // Wires up the payment page: method tab switching and card/expiry input formatting.
 function initPaymentPage() {
   // Grab all payment method tab buttons and the two form sections
@@ -182,97 +277,27 @@ if (document.body.id === "cart-page") {
   }
 }
 
-// ── Run only on the payment page ──
-if (document.body.id === "payment-page") {
-  initPaymentPage();
-}
-
-// ── Run on every page ──
-initHeader();
-initFooter();
-
-// ── Run only on the product detail page ──
-if (document.body.id === "Product-detail") {
-  initQuantity();
-  initVariants();
-  initImageZoom();
-}
-
-// ── Product list page ──
-const products = {
-  dogs: [
-    {
-      name: "Dog Food 1",
-      price: 99.99,
-      originalPrice: 129.99,
-      image: "images/product_img/dog_food_1.png",
-      sale: true,
-    },
-    {
-      name: "Dog Food 2",
-      price: 99.99,
-      originalPrice: 129.99,
-      image: "images/product_img/dog_food_2.png",
-      sale: true,
-    },
-    {
-      name: "Dog Food 3",
-      price: 99.99,
-      image: "images/product_img/dog_food_3.png",
-      sale: false,
-    },
-    {
-      name: "Dog Food 4",
-      price: 99.99,
-      image: "images/product_img/dog_food_4.png",
-      sale: false,
-    },
-  ],
-  cats: [
-    {
-      name: "Cat Food 1",
-      price: 89.99,
-      originalPrice: 109.99,
-      image: "images/product_img/cat_food_1.png",
-      sale: true,
-    },
-    {
-      name: "Cat Food 2",
-      price: 79.99,
-      image: "images/product_img/cat_food_2.png",
-      sale: false,
-    },
-  ],
-};
-
-function renderProductCard(product) {
-  let saleBadge;
-  if (product.sale) {
-    saleBadge = `<span class="sale-badge">SALE</span>`;
-  } else {
-    saleBadge = "";
-  }
-
-  let originalPrice;
-  if (product.originalPrice) {
-    originalPrice = `<del class="original-price">$${product.originalPrice.toFixed(2)}</del>`;
-  } else {
-    originalPrice = "";
-  }
+function renderProductCard(product, category, index) {
+  const saleBadge = product.sale ? `<span class="sale-badge">SALE</span>` : "";
+  const originalPrice = product.originalPrice
+    ? `<del class="original-price">$${product.originalPrice.toFixed(2)}</del>`
+    : "";
   return `
-        <article class="product-card">
-            <div class="product-card-img">
-                <img src="${product.image}" alt="${product.name}">
-                ${saleBadge}
-            </div>
-            <div class="product-card-info">
-                <h3>${product.name}</h3>
-                <p>
-                    <span class="price">$${product.price.toFixed(2)}</span>
-                    ${originalPrice}
-                </p>
-            </div>
-        </article>
+        <a href="product_detail.html?category=${category}&index=${index}" class="product-card-link">
+            <article class="product-card">
+                <div class="product-card-img">
+                    <img src="${product.image}" alt="${product.name}">
+                    ${saleBadge}
+                </div>
+                <div class="product-card-info">
+                    <h3>${product.name}</h3>
+                    <p>
+                        <span class="price">$${product.price.toFixed(2)}</span>
+                        ${originalPrice}
+                    </p>
+                </div>
+            </article>
+        </a>
     `;
 }
 
@@ -287,7 +312,91 @@ function initProductList() {
     category.charAt(0).toUpperCase() + category.slice(1) + " Foods";
   document.getElementById("product-count").textContent =
     `${list.length} Products`;
-  grid.innerHTML = list.map(renderProductCard).join("");
+  grid.innerHTML = list.map((p, i) => renderProductCard(p, category, i)).join("");
 }
 
-initProductList();
+function initProductDetail() {
+  const params = new URLSearchParams(window.location.search);
+  const category = params.get("category");
+  const index = parseInt(params.get("index"), 10);
+  const product = products[category]?.[index];
+  if (!product) return;
+
+  // Image
+  const img = document.querySelector(".product-img img");
+  img.src = product.image;
+  img.alt = product.name;
+
+  // Name, price, initial size label
+  document.querySelector(".product-info h1").textContent = product.name;
+  document.querySelector(".product-info .price").textContent = `$${product.price.toFixed(2)}`;
+  const sizeLabel = document.querySelector(".size strong");
+  if (sizeLabel) sizeLabel.textContent = product.variants[product.variants.length - 1];
+
+  // Variant buttons
+  const variantsDiv = document.querySelector(".product-variants");
+  variantsDiv.innerHTML = product.variants
+    .map((v, i) => {
+      if (i === product.variants.length - 1) {
+        return `<button class="active">${v}</button>`;
+      } else {
+        return `<button>${v}</button>`;
+      }
+    })
+    .join("");
+
+  // Adding accordion content
+  const details = document.querySelectorAll(".product-description details");
+  if (details[0]) details[0].querySelector("p").textContent = product.ingredients;
+  if (details[1]) details[1].querySelector("p").textContent = product.description;
+
+  // Related products (up to 2 others in same category)
+  const relatedSection = document.querySelector(".related-products");
+  const related = products[category]
+    .map((p, i) => ({ product: p, index: i }))
+    .filter(({ index: i }) => i !== index)
+    .slice(0, 2);
+
+  relatedSection.innerHTML =
+    `<h2>Related Products</h2>` +
+    related
+      .map(
+        ({ product: p, index: i }) => `
+        <a href="product_detail.html?category=${category}&index=${i}" class="product-card-link">
+            <article class="product-card product-card-row">
+                <div class="product-card-img">
+                    <img src="${p.image}" alt="${p.name}">
+                </div>
+                <div class="product-card-info">
+                    <h3>${p.name}</h3>
+                    <p class="price">$${p.price.toFixed(2)}</p>
+                </div>
+            </article>
+        </a>`
+      )
+      .join("");
+
+  // Re-init interactive components now that DOM is populated
+  initVariants();
+  initImageZoom();
+}
+
+
+// ── Run only on the payment page ──
+if (document.body.id === "payment-page") {
+  initPaymentPage();
+}
+
+// ── Run on every page ──
+initHeader();
+initFooter();
+
+// ── Run only on the product detail page ──
+if (document.body.id === "Product-detail") {
+  initProductDetail();
+  initQuantity();
+}
+
+if (document.body.id === "Product-list") {
+  initProductList();
+}
