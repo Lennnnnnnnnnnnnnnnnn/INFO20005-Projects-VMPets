@@ -10,8 +10,10 @@ const products = {
       image: "images/product_img/dog_food_1.png",
       sale: true,
       variants: ["500g", "1kg", "2kg"],
-      ingredients: "Chicken, whole grain corn, animal fat, natural flavours, vitamins & minerals.",
-      description: "Complete nutrition for adult dogs. Rich in protein with essential vitamins for a healthy coat and strong bones.",
+      ingredients:
+        "Chicken, whole grain corn, animal fat, natural flavours, vitamins & minerals.",
+      description:
+        "Complete nutrition for adult dogs. Rich in protein with essential vitamins for a healthy coat and strong bones.",
     },
     {
       name: "Dog Food 2",
@@ -20,8 +22,10 @@ const products = {
       image: "images/product_img/dog_food_2.png",
       sale: true,
       variants: ["1kg", "3kg"],
-      ingredients: "Beef, rice flour, vegetable oil, natural flavours, taurine, vitamins & minerals.",
-      description: "Premium beef formula for active adult dogs. Supports muscle development and sustained energy levels.",
+      ingredients:
+        "Beef, rice flour, vegetable oil, natural flavours, taurine, vitamins & minerals.",
+      description:
+        "Premium beef formula for active adult dogs. Supports muscle development and sustained energy levels.",
     },
     {
       name: "Dog Food 3",
@@ -29,8 +33,10 @@ const products = {
       image: "images/product_img/dog_food_3.png",
       sale: false,
       variants: ["500g", "2kg", "5kg"],
-      ingredients: "Lamb, barley, sunflower oil, flaxseed, probiotics, vitamins & minerals.",
-      description: "Gentle lamb and barley recipe ideal for dogs with sensitive stomachs. Promotes healthy digestion.",
+      ingredients:
+        "Lamb, barley, sunflower oil, flaxseed, probiotics, vitamins & minerals.",
+      description:
+        "Gentle lamb and barley recipe ideal for dogs with sensitive stomachs. Promotes healthy digestion.",
     },
     {
       name: "Dog Food 4",
@@ -38,8 +44,10 @@ const products = {
       image: "images/product_img/dog_food_4.png",
       sale: false,
       variants: ["1kg", "2kg"],
-      ingredients: "Salmon, sweet potato, pea flour, omega-3 fatty acids, vitamins & minerals.",
-      description: "Grain-free salmon formula rich in omega-3 fatty acids for a shiny coat and healthy skin.",
+      ingredients:
+        "Salmon, sweet potato, pea flour, omega-3 fatty acids, vitamins & minerals.",
+      description:
+        "Grain-free salmon formula rich in omega-3 fatty acids for a shiny coat and healthy skin.",
     },
   ],
   cats: [
@@ -50,8 +58,10 @@ const products = {
       image: "images/product_img/cat_food_1.png",
       sale: true,
       variants: ["400g", "1kg"],
-      ingredients: "Chicken, fish meal, corn starch, taurine, vitamins & minerals.",
-      description: "Complete and balanced nutrition for adult cats. High in protein to support lean muscle mass.",
+      ingredients:
+        "Chicken, fish meal, corn starch, taurine, vitamins & minerals.",
+      description:
+        "Complete and balanced nutrition for adult cats. High in protein to support lean muscle mass.",
     },
     {
       name: "Cat Food 2",
@@ -60,7 +70,8 @@ const products = {
       sale: false,
       variants: ["300g", "800g"],
       ingredients: "Tuna, rice, sunflower oil, taurine, vitamins & minerals.",
-      description: "Delicious tuna flavour cats love. Promotes urinary tract health and supports a healthy immune system.",
+      description:
+        "Delicious tuna flavour cats love. Promotes urinary tract health and supports a healthy immune system.",
     },
     {
       name: "Cat Food 3",
@@ -68,8 +79,10 @@ const products = {
       image: "images/product_img/cat_food_3.png",
       sale: false,
       variants: ["300g", "800g", "2kg"],
-      ingredients: "Salmon, herring, pea protein, omega-3 fatty acids, vitamins & minerals.",
-      description: "Ocean fish blend that supports healthy vision and brain development in adult cats.",
+      ingredients:
+        "Salmon, herring, pea protein, omega-3 fatty acids, vitamins & minerals.",
+      description:
+        "Ocean fish blend that supports healthy vision and brain development in adult cats.",
     },
     {
       name: "Cat Food 4",
@@ -78,7 +91,8 @@ const products = {
       sale: false,
       variants: ["400g", "1.2kg"],
       ingredients: "Beef, liver, potato starch, taurine, vitamins & minerals.",
-      description: "Rich beef and liver recipe for cats who prefer red meat flavours. Supports muscle tone and vitality.",
+      description:
+        "Rich beef and liver recipe for cats who prefer red meat flavours. Supports muscle tone and vitality.",
     },
   ],
 };
@@ -137,6 +151,24 @@ function initFooter() {
 if (document.body.id === "menu-page") {
   const closeBtn = document.querySelector("#menu-page > img");
   closeBtn.addEventListener("click", () => history.back());
+}
+
+/*-------------------------------------- Product List--------------------------------------*/
+
+function initProductList() {
+  const grid = document.getElementById("product-grid");
+  if (!grid) return;
+
+  const category = new URLSearchParams(window.location.search).get("category");
+  const list = products[category];
+
+  document.getElementById("category-title").textContent =
+    category.charAt(0).toUpperCase() + category.slice(1) + " Foods";
+  document.getElementById("product-count").textContent =
+    `${list.length} Products`;
+  grid.innerHTML = list
+    .map((p, i) => renderProductCard(p, category, i))
+    .join("");
 }
 
 /*-------------------------------------- Product Detail--------------------------------------*/
@@ -208,6 +240,77 @@ function initImageZoom() {
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") overlay.classList.remove("active");
   });
+}
+
+
+function initProductDetail() {
+  const params = new URLSearchParams(window.location.search);
+  const category = params.get("category");
+  const index = parseInt(params.get("index"), 10);
+  const product = products[category]?.[index];
+  if (!product) return;
+
+  // Image
+  const img = document.querySelector(".product-img img");
+  img.src = product.image;
+  img.alt = product.name;
+
+  // Name, price, initial size label
+  document.querySelector(".product-info h1").textContent = product.name;
+  document.querySelector(".product-info .price").textContent =
+    `$${product.price.toFixed(2)}`;
+  const sizeLabel = document.querySelector(".size strong");
+  if (sizeLabel)
+    sizeLabel.textContent = product.variants[product.variants.length - 1];
+
+  // Variant buttons
+  const variantsDiv = document.querySelector(".product-variants");
+  variantsDiv.innerHTML = product.variants
+    .map((v, i) => {
+      if (i === product.variants.length - 1) {
+        return `<button class="active">${v}</button>`;
+      } else {
+        return `<button>${v}</button>`;
+      }
+    })
+    .join("");
+
+  // Adding accordion content
+  const details = document.querySelectorAll(".product-description details");
+  if (details[0])
+    details[0].querySelector("p").textContent = product.ingredients;
+  if (details[1])
+    details[1].querySelector("p").textContent = product.description;
+
+  // Related products (up to 2 others in same category)
+  const relatedSection = document.querySelector(".related-products");
+  const related = products[category]
+    .map((p, i) => ({ product: p, index: i }))
+    .filter(({ index: i }) => i !== index)
+    .slice(0, 2);
+
+  relatedSection.innerHTML =
+    `<h2>Related Products</h2>` +
+    related
+      .map(
+        ({ product: p, index: i }) => `
+        <a href="product_detail.html?category=${category}&index=${i}" class="product-card-link">
+            <article class="product-card product-card-row">
+                <div class="product-card-img">
+                    <img src="${p.image}" alt="${p.name}">
+                </div>
+                <div class="product-card-info">
+                    <h3>${p.name}</h3>
+                    <p class="price">$${p.price.toFixed(2)}</p>
+                </div>
+            </article>
+        </a>`,
+      )
+      .join("");
+
+  // Re-init interactive components now that DOM is populated
+  initVariants();
+  initImageZoom();
 }
 
 /*-------------------------------------- Payment--------------------------------------*/
@@ -301,85 +404,7 @@ function renderProductCard(product, category, index) {
     `;
 }
 
-function initProductList() {
-  const grid = document.getElementById("product-grid");
-  if (!grid) return;
-
-  const category = new URLSearchParams(window.location.search).get("category");
-  const list = products[category];
-
-  document.getElementById("category-title").textContent =
-    category.charAt(0).toUpperCase() + category.slice(1) + " Foods";
-  document.getElementById("product-count").textContent =
-    `${list.length} Products`;
-  grid.innerHTML = list.map((p, i) => renderProductCard(p, category, i)).join("");
-}
-
-function initProductDetail() {
-  const params = new URLSearchParams(window.location.search);
-  const category = params.get("category");
-  const index = parseInt(params.get("index"), 10);
-  const product = products[category]?.[index];
-  if (!product) return;
-
-  // Image
-  const img = document.querySelector(".product-img img");
-  img.src = product.image;
-  img.alt = product.name;
-
-  // Name, price, initial size label
-  document.querySelector(".product-info h1").textContent = product.name;
-  document.querySelector(".product-info .price").textContent = `$${product.price.toFixed(2)}`;
-  const sizeLabel = document.querySelector(".size strong");
-  if (sizeLabel) sizeLabel.textContent = product.variants[product.variants.length - 1];
-
-  // Variant buttons
-  const variantsDiv = document.querySelector(".product-variants");
-  variantsDiv.innerHTML = product.variants
-    .map((v, i) => {
-      if (i === product.variants.length - 1) {
-        return `<button class="active">${v}</button>`;
-      } else {
-        return `<button>${v}</button>`;
-      }
-    })
-    .join("");
-
-  // Adding accordion content
-  const details = document.querySelectorAll(".product-description details");
-  if (details[0]) details[0].querySelector("p").textContent = product.ingredients;
-  if (details[1]) details[1].querySelector("p").textContent = product.description;
-
-  // Related products (up to 2 others in same category)
-  const relatedSection = document.querySelector(".related-products");
-  const related = products[category]
-    .map((p, i) => ({ product: p, index: i }))
-    .filter(({ index: i }) => i !== index)
-    .slice(0, 2);
-
-  relatedSection.innerHTML =
-    `<h2>Related Products</h2>` +
-    related
-      .map(
-        ({ product: p, index: i }) => `
-        <a href="product_detail.html?category=${category}&index=${i}" class="product-card-link">
-            <article class="product-card product-card-row">
-                <div class="product-card-img">
-                    <img src="${p.image}" alt="${p.name}">
-                </div>
-                <div class="product-card-info">
-                    <h3>${p.name}</h3>
-                    <p class="price">$${p.price.toFixed(2)}</p>
-                </div>
-            </article>
-        </a>`
-      )
-      .join("");
-
-  // Re-init interactive components now that DOM is populated
-  initVariants();
-  initImageZoom();
-}
+/*-------------------------------------- Initializations --------------------------------------*/
 
 
 // ── Run only on the payment page ──
