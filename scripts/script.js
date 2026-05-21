@@ -115,8 +115,9 @@ function initHeader() {
                 <a href="search.html">
                     <img id="search-icon" src="images/icons/Search.svg" alt="Search button">
                 </a>
-                <a href="shopping_cart.html">
+                <a href="shopping_cart.html" class="cart-icon-wrapper">
                     <img id="cart-icon" src="images/icons/cart.svg" alt="Cart button">
+                    <span id="cart-badge" class="hidden"></span>
                 </a>
             </div>
         </nav>
@@ -151,6 +152,12 @@ function initFooter() {
 if (document.body.id === "menu-page") {
   const closeBtn = document.querySelector("#menu-page > img");
   closeBtn.addEventListener("click", () => history.back());
+
+    document.querySelectorAll(".section-header").forEach((header) => {
+    header.addEventListener("click", () => {
+      header.closest(".sub-sections").classList.toggle("open");
+    });
+  });
 }
 
 /*-------------------------------------- Product List--------------------------------------*/
@@ -159,7 +166,7 @@ function initProductList() {
   const grid = document.getElementById("product-grid");
   if (!grid) return;
 
-  const category = new URLSearchParams(window.location.search).get("category");
+  const category = new URLSearchParams(window.location.search).get("category") || "dogs";
   const list = products[category];
 
   document.getElementById("category-title").textContent =
@@ -169,6 +176,16 @@ function initProductList() {
   grid.innerHTML = list
     .map((p, i) => renderProductCard(p, category, i))
     .join("");
+
+  grid.addEventListener("click", (e) => {
+    const btn = e.target.closest(".card-add-btn");
+    if (!btn) return;
+    const href = btn.closest("article").querySelector(".card-view-btn").getAttribute("href");
+    const params = new URLSearchParams(href.split("?")[1]);
+    const cat = params.get("category");
+    const idx = parseInt(params.get("index"));
+    addToCart(cat, idx, products[cat][idx].variants[0], 1);
+  });
 }
 
 /*-------------------------------------- Product Detail--------------------------------------*/
@@ -311,12 +328,37 @@ function initProductDetail() {
   // Re-init interactive components now that DOM is populated
   initVariants();
   initImageZoom();
+
+  // Wire add to cart button
+  document.getElementById("add-to-cart").addEventListener("click", () => {
+    const variant = document.querySelector(".product-variants button.active").textContent;
+    const quantity = parseInt(document.getElementById("qty").value);
+    addToCart(category, index, variant, quantity);
+  });
 }
 
 /*-------------------------------------- Payment--------------------------------------*/
 
 // Wires up the payment page: method tab switching and card/expiry input formatting.
 function initPaymentPage() {
+  // Populate order summary from cart
+  const cart = getCart();
+  const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+  document.querySelector(".summary-badge").textContent = `${cart.length} item${cart.length !== 1 ? "s" : ""}`;
+  document.getElementById("summary-items").innerHTML = cart.map((item) => `
+    <div class="summary-item">
+      <div class="summary-item-info">
+        <p class="summary-item-name">${item.name}</p>
+        <p class="summary-item-detail">${item.variant} · x${item.quantity}</p>
+      </div>
+      <p class="price">$${(item.price * item.quantity).toFixed(2)}</p>
+    </div>
+  `).join("");
+  document.getElementById("summary-subtotal").textContent = `$${subtotal.toFixed(2)}`;
+  document.getElementById("summary-total").textContent = `$${subtotal.toFixed(2)}`;
+  document.getElementById("place-order").textContent = `Place Order — $${subtotal.toFixed(2)}`;
+
   // Grab all payment method tab buttons and the two form sections
   const tabs = document.querySelectorAll(".method-tab");
   const cardFields = document.getElementById("card-fields");
@@ -370,14 +412,86 @@ function initPaymentPage() {
   }
 }
 
-// ── Run only on the cart page ──
-if (document.body.id === "cart-page") {
-  const checkoutBtn = document.querySelector(".checkout-btn");
-  if (checkoutBtn) {
-    checkoutBtn.addEventListener("click", () => {
-      window.location.href = "payment.html";
-    });
+/*-------------------------------------- Shopping Cart Page --------------------------------------*/
+
+function initCartPage() {
+  const cart = getCart();
+  const cartSection = document.querySelector(".cart-section");
+  const itemsSelectedEl = document.querySelector(".items-selected");
+  const subtotalEl = document.getElementById("cart-subtotal");
+
+  if (cart.length === 0) {
+    cartSection.innerHTML = "<p class='empty-cart'>Your cart is empty.</p>";
+    itemsSelectedEl.textContent = "0 Items Selected";
+    subtotalEl.textContent = "$0.00";
+    return;
   }
+
+  const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  itemsSelectedEl.textContent = `${cart.length} Items Selected`;
+  subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+
+  cartSection.innerHTML =
+    `<h1>Total: ${cart.length} item${cart.length !== 1 ? "s" : ""}</h1>` +
+    cart.map((item, i) => `
+      <article class="cart-item">
+        <input type="checkbox" name="select-item" checked>
+        <img src="${item.image}" alt="${item.name}">
+        <div class="cart-item-info">
+          <h3>${item.name}</h3>
+          <p>${item.variant}</p>
+          <p>Quantity: x${item.quantity}</p>
+          <p class="price">$${(item.price * item.quantity).toFixed(2)}</p>
+        </div>
+        <div class="cart-item-actions">
+          <a href="product_detail.html?category=${item.category}&index=${item.index}">Edit</a>
+          <a href="#" class="remove-item" data-index="${i}">Remove</a>
+        </div>
+      </article>
+    `).join("");
+
+  cartSection.querySelectorAll(".remove-item").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const updated = getCart();
+      updated.splice(parseInt(btn.dataset.index), 1);
+      saveCart(updated);
+      updateCartBadge();
+      initCartPage();
+    });
+  });
+
+  document.querySelector(".checkout-btn").addEventListener("click", () => {
+    window.location.href = "payment.html";
+  });
+
+  // Recommended: 2 products not already in cart
+  const cartIndices = cart.map((i) => `${i.category}-${i.index}`);
+  const recommended = [];
+  for (const [category, list] of Object.entries(products)) {
+    for (let i = 0; i < list.length; i++) {
+      if (!cartIndices.includes(`${category}-${i}`)) {
+        recommended.push({ product: list[i], category, index: i });
+      }
+      if (recommended.length === 2) break;
+    }
+    if (recommended.length === 2) break;
+  }
+
+  const recommendedSection = document.getElementById("recommended-section");
+  recommendedSection.innerHTML =
+    `<h2>Recommended Products</h2>` +
+    recommended.map(({ product, category, index }) => renderProductCard(product, category, index)).join("");
+
+  recommendedSection.addEventListener("click", (e) => {
+    const btn = e.target.closest(".card-add-btn");
+    if (!btn) return;
+    const href = btn.closest("article").querySelector(".card-view-btn").getAttribute("href");
+    const params = new URLSearchParams(href.split("?")[1]);
+    const cat = params.get("category");
+    const idx = parseInt(params.get("index"));
+    addToCart(cat, idx, products[cat][idx].variants[0], 1);
+  });
 }
 
 function renderProductCard(product, category, index, row = false) {
@@ -441,11 +555,84 @@ function initOnSalePage() {
     grid.innerHTML = sorted
       .map(({ product, category, index }) => renderProductCard(product, category, index))
       .join("");
+
+    grid.addEventListener("click", (e) => {
+      const btn = e.target.closest(".card-add-btn");
+      if (!btn) return;
+      const href = btn.closest("article").querySelector(".card-view-btn").getAttribute("href");
+      const params = new URLSearchParams(href.split("?")[1]);
+      const cat = params.get("category");
+      const idx = parseInt(params.get("index"));
+      addToCart(cat, idx, products[cat][idx].variants[0], 1);
+    });
   }
 
   render("default");
 
   document.getElementById("sort-select").addEventListener("change", (e) => render(e.target.value));
+}
+/*-------------------------------------- Cart Storage --------------------------------------*/
+
+// Shows a 2-second notification under the nav confirming the item was added
+function updateCartBadge() {
+  const badge = document.getElementById("cart-badge");
+  if (!badge) return;
+  const count = getCart().reduce((sum, item) => sum + item.quantity, 0);
+  if (count === 0) {
+    badge.classList.add("hidden");
+  } else {
+    badge.classList.remove("hidden");
+    badge.textContent = count > 99 ? "99+" : count;
+  }
+}
+
+function showCartNotification() {
+  let notification = document.getElementById("cart-notification");
+  if (!notification) {
+    notification = document.createElement("div");
+    notification.id = "cart-notification";
+    notification.textContent = "Item Added Successfully!";
+    document.body.appendChild(notification);
+  }
+
+  notification.classList.add("show");
+  setTimeout(() => notification.classList.remove("show"), 2000);
+}
+
+// utility functions that read/write cart from a localStorage
+function getCart() {
+  return JSON.parse(localStorage.getItem("cart") || "[]"); // converts string from localStorage to js
+}
+function saveCart(cart) {
+  localStorage.setItem("cart", JSON.stringify(cart)); // save js cart arrays into localStorage strings
+}
+
+function addToCart(category, index, variant, quantity) {
+  const product = products[category][index];
+  const cart = getCart();
+
+  // find existing entry with same product and variant
+  const existing = cart.find(
+    (item) => item.category === category && item.index === index && item.variant === variant
+  );
+
+  if (existing) {
+    existing.quantity += quantity;
+  } else {
+    cart.push({
+      category,
+      index,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      variant,
+      quantity,
+    });
+  }
+
+  saveCart(cart);
+  updateCartBadge();
+  showCartNotification();
 }
 
 /*-------------------------------------- Initializations --------------------------------------*/
@@ -456,8 +643,14 @@ if (document.body.id === "payment-page") {
   initPaymentPage();
 }
 
+// ── Run only on the cart page ──
+if (document.body.id === "cart-page") {
+  initCartPage();
+}
+
 // ── Run on every page ──
 initHeader();
+updateCartBadge();
 initFooter();
 
 // ── Run only on the product detail page ──

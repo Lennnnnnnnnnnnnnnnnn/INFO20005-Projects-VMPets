@@ -18,47 +18,15 @@
     </header>
 
     <main>
-        <!-- Cart Items -->
-        <section    class="cart-section">
-            <h1>Total: 2 items</h1>
-
-            <article class="cart-item">
-                <input type="checkbox" name="select-item">
-                <img src="product-image.jpg" alt="Product Name">
-                <div class="cart-item-info">
-                    <h3>Product Name</h3>
-                    <p>Brief Description</p>
-                    <p>Quantity: x1</p>
-                    <p class="price">$99.99</p>
-                </div>
-                <div class="cart-item-actions">
-                    <a href="#">Edit</a>
-                    <a href="#">Remove</a>
-                </div>
-            </article>
-
-            <article class="cart-item">
-                <input type="checkbox" name="select-item">
-                <img src="product-image2.jpg" alt="Product Name">
-                <div class="cart-item-info">
-                    <h3>Product Name</h3>
-                    <p>Brief Description</p>
-                    <p>Quantity: x1</p>
-                    <p class="price">$99.99</p>
-                </div>
-                <div class="cart-item-actions">
-                    <a href="#">Edit</a>
-                    <a href="#">Remove</a>
-                </div>
-            </article>
-        </section>
+        <!-- Cart Items (populated by JS) -->
+        <section class="cart-section"></section>
 
         <!-- Order Summary -->
         <section class="order-summary">
-            <p class="items-selected">2 Items Selected</p>
+            <p class="items-selected"></p>
             <div class="order-summary-row">
                 <span>Subtotal</span>
-                <span>$199.98</span>
+                <span id="cart-subtotal">$0.00</span>
             </div>
             <div class="order-note">
                 <label for="order-note">Order Note</label>
@@ -67,30 +35,8 @@
             <button class="checkout-btn">Checkout Now</button>
         </section>
 
-        <!-- Recommended Products -->
-        <section class="recommended-section">
-            <h2>Recommended Products</h2>
-
-            <article class="product-card product-card-row">
-                <div class="product-card-img">
-                    <img src="dog-food.jpg" alt="Dog Food Product" >
-                </div>
-                <div class="product-card-info">
-                    <h3>Dog Food Product Name</h3>
-                    <p class="price">$99.99</p>
-                </div>
-            </article>
-
-            <article class="product-card product-card-row">
-                <div class="product-card-img">
-                    <img src="cat-food.jpg" alt="Cat Food Product">
-                </div>
-                <div class="product-card-info">
-                    <h3>Cat Food Product Name</h3>
-                    <p class="price">$99.99</p>
-                </div>
-            </article>
-        </section>
+        <!-- Recommended Products (populated by JS) -->
+        <section class="recommended-section" id="recommended-section"></section>
     </main>
 
     <footer>
