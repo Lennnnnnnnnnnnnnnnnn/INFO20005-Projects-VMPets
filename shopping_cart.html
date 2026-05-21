@@ -18,22 +18,26 @@
     </header>
 
     <main>
-        <!-- Cart Items (populated by JS) -->
-        <section class="cart-section"></section>
+        <h1 id="cart-title"></h1>
 
-        <!-- Order Summary -->
-        <section class="order-summary">
-            <p class="items-selected"></p>
-            <div class="order-summary-row">
-                <span>Subtotal</span>
-                <span id="cart-subtotal">$0.00</span>
-            </div>
-            <div class="order-note">
-                <label for="order-note">Order Note</label>
-                <textarea id="order-note" name="order-note" rows="3"></textarea>
-            </div>
-            <button class="checkout-btn">Checkout Now</button>
-        </section>
+        <div class="cart-body">
+            <!-- Cart Items (populated by JS) -->
+            <section class="cart-section"></section>
+
+            <!-- Order Summary -->
+            <section class="order-summary">
+                <p class="items-selected"></p>
+                <div class="order-summary-row">
+                    <span>Subtotal</span>
+                    <span id="cart-subtotal">$0.00</span>
+                </div>
+                <div class="order-note">
+                    <label for="order-note">Order Note</label>
+                    <textarea id="order-note" name="order-note" rows="3"></textarea>
+                </div>
+                <button class="checkout-btn">Checkout Now</button>
+            </section>
+        </div>
 
         <!-- Recommended Products (populated by JS) -->
         <section class="recommended-section" id="recommended-section"></section>

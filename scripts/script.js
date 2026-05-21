@@ -4,7 +4,7 @@
 const products = {
   dogs: [
     {
-      name: "Dog Food 1",
+      name: "Pedigree Adult Dog Food",
       price: 99.99,
       originalPrice: 129.99,
       image: "images/product_img/dog_food_1.png",
@@ -16,7 +16,7 @@ const products = {
         "Complete nutrition for adult dogs. Rich in protein with essential vitamins for a healthy coat and strong bones.",
     },
     {
-      name: "Dog Food 2",
+      name: "Knibbles'nBites Dog Food",
       price: 99.99,
       originalPrice: 129.99,
       image: "images/product_img/dog_food_2.png",
@@ -28,7 +28,7 @@ const products = {
         "Premium beef formula for active adult dogs. Supports muscle development and sustained energy levels.",
     },
     {
-      name: "Dog Food 3",
+      name: "Hypro Premium Dog Food",
       price: 99.99,
       image: "images/product_img/dog_food_3.png",
       sale: false,
@@ -39,7 +39,7 @@ const products = {
         "Gentle lamb and barley recipe ideal for dogs with sensitive stomachs. Promotes healthy digestion.",
     },
     {
-      name: "Dog Food 4",
+      name: "4Legs Natural Chicken Dog Food",
       price: 99.99,
       image: "images/product_img/dog_food_4.png",
       sale: false,
@@ -52,7 +52,7 @@ const products = {
   ],
   cats: [
     {
-      name: "Cat Food 1",
+      name: "Whiskas Cat Food",
       price: 89.99,
       originalPrice: 109.99,
       image: "images/product_img/cat_food_1.png",
@@ -64,7 +64,7 @@ const products = {
         "Complete and balanced nutrition for adult cats. High in protein to support lean muscle mass.",
     },
     {
-      name: "Cat Food 2",
+      name: "FussyCat Tuna & Salmon Gravy",
       price: 79.99,
       image: "images/product_img/cat_food_2.png",
       sale: false,
@@ -74,7 +74,7 @@ const products = {
         "Delicious tuna flavour cats love. Promotes urinary tract health and supports a healthy immune system.",
     },
     {
-      name: "Cat Food 3",
+      name: "BIGDOG Fresh Cat Food",
       price: 79.99,
       image: "images/product_img/cat_food_3.png",
       sale: false,
@@ -85,7 +85,7 @@ const products = {
         "Ocean fish blend that supports healthy vision and brain development in adult cats.",
     },
     {
-      name: "Cat Food 4",
+      name: "BlackHawk Chicken Cat Food",
       price: 79.99,
       image: "images/product_img/cat_food_4.png",
       sale: false,
@@ -108,8 +108,14 @@ function initHeader() {
             <a href="index.html">
                 <p class="brand-logo">VM Pet Shop</p>
             </a>
+            <div class="nav-links">
+                <a href="product_list.html?category=dogs">Dogs</a>
+                <a href="product_list.html?category=cats">Cats</a>
+                <a href="on_sale.html">On Sale</a>
+                <a href="#">Top Selling</a>
+            </div>
             <div class="nav-icons">
-                <a href="menu.html">
+                <a href="menu.html" class="nav-menu-link">
                     <img id="menu-icon" src="images/icons/Menu.svg" alt="Menu button">
                 </a>
                 <a href="search.html">
@@ -419,11 +425,13 @@ function initCartPage() {
   const cartSection = document.querySelector(".cart-section");
   const itemsSelectedEl = document.querySelector(".items-selected");
   const subtotalEl = document.getElementById("cart-subtotal");
+  const cartTitle = document.getElementById("cart-title");
 
   if (cart.length === 0) {
     cartSection.innerHTML = "<p class='empty-cart'>Your cart is empty.</p>";
     itemsSelectedEl.textContent = "0 Items Selected";
     subtotalEl.textContent = "$0.00";
+    cartTitle.style.display = 'none';
     return;
   }
 
@@ -431,28 +439,38 @@ function initCartPage() {
   itemsSelectedEl.textContent = `${cart.length} Items Selected`;
   subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
 
+  if (cartTitle) cartTitle.textContent = `Total: ${cart.length} item${cart.length !== 1 ? "s" : ""}`;
+
   cartSection.innerHTML =
-    `<h1>Total: ${cart.length} item${cart.length !== 1 ? "s" : ""}</h1>` +
     cart.map((item, i) => `
       <article class="cart-item">
         <input type="checkbox" name="select-item" checked>
         <img src="${item.image}" alt="${item.name}">
-        <div class="cart-item-info">
-          <h3>${item.name}</h3>
-          <p>${item.variant}</p>
-          <p>Quantity: x${item.quantity}</p>
-          <p class="price">$${(item.price * item.quantity).toFixed(2)}</p>
-        </div>
-        <div class="cart-item-actions">
-          <a href="product_detail.html?category=${item.category}&index=${item.index}">Edit</a>
-          <a href="#" class="remove-item" data-index="${i}">Remove</a>
+        <div class="cart-item-body">
+          <div class="cart-item-info">
+            <h3>${item.name}</h3>
+            <div class="cart-item-meta">
+              <p>${item.variant}</p>
+              <p>Quantity: x${item.quantity}</p>
+            </div>
+            <p class="price">$${(item.price * item.quantity).toFixed(2)}</p>
+          </div>
+          <div class="cart-item-actions">
+            <button class="edit-item" data-category="${item.category}" data-index="${item.index}">Edit</button>
+            <button class="remove-item" data-index="${i}">Remove</button>
+          </div>
         </div>
       </article>
     `).join("");
 
+  cartSection.querySelectorAll(".edit-item").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      window.location.href = `product_detail.html?category=${btn.dataset.category}&index=${btn.dataset.index}`;
+    });
+  });
+
   cartSection.querySelectorAll(".remove-item").forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      e.preventDefault();
+    btn.addEventListener("click", () => {
       const updated = getCart();
       updated.splice(parseInt(btn.dataset.index), 1);
       saveCart(updated);
@@ -481,7 +499,7 @@ function initCartPage() {
   const recommendedSection = document.getElementById("recommended-section");
   recommendedSection.innerHTML =
     `<h2>Recommended Products</h2>` +
-    recommended.map(({ product, category, index }) => renderProductCard(product, category, index)).join("");
+    recommended.map(({ product, category, index }) => renderProductCard(product, category, index, true)).join("");
 
   recommendedSection.addEventListener("click", (e) => {
     const btn = e.target.closest(".card-add-btn");
@@ -494,13 +512,13 @@ function initCartPage() {
   });
 }
 
-function renderProductCard(product, category, index, row = false) {
+function renderProductCard(product, category, index, row = false, buttons = true) {
   const saleBadge = product.sale ? `<span class="sale-badge">SALE</span>` : "";
   const originalPrice = product.originalPrice
     ? `<del class="original-price">$${product.originalPrice.toFixed(2)}</del>`
     : "";
   return `
-        <article class="product-card">
+        <article class="product-card${row ? " product-card-row" : ""}">
             <a href="product_detail.html?category=${category}&index=${index}" class="product-card-img-link">
                 <div class="product-card-img">
                     <img src="${product.image}" alt="${product.name}">
@@ -517,10 +535,11 @@ function renderProductCard(product, category, index, row = false) {
                         </p>
                     </div>
                 </a>
+                ${buttons ? `
                 <div class="card-btn-row">
                     <a href="product_detail.html?category=${category}&index=${index}" class="card-view-btn">View Product</a>
                     <button class="card-add-btn">Add to Cart</button>
-                </div>
+                </div>` : ""}
             </div>
         </article>
     `;

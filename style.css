@@ -172,10 +172,40 @@ nav a:visited {
     color: var(--black)
 }
 
+.nav-links {
+    display: none;
+}
+
 @media (min-width: 1024px) {
     nav {
         padding: 0 60px;
         height: 70px;
+    }
+
+    .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 36px;
+        flex: 1;
+        justify-content: center;
+    }
+
+    .nav-links a {
+        font-family: 'Nunito', sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--black);
+        text-decoration: none;
+        letter-spacing: 0.01em;
+        transition: color 0.15s;
+    }
+
+    .nav-links a:hover {
+        color: var(--darkest-beige);
+    }
+
+    .nav-menu-link {
+        display: none;
     }
 
     .nav-icons {
@@ -729,6 +759,11 @@ footer p {
     padding: 5px 0;
 }
 
+#menu-page a {
+    text-decoration: none;
+    color: inherit;
+}
+
 #menu-page ul li a {
     color: var(--white);
     text-decoration: none;
@@ -754,6 +789,11 @@ footer p {
 #menu-page .footer-copy {
     font-size: 11px;
     color: rgba(255, 255, 255, 0.45);
+}
+
+menu a {
+    text-decoration: none;
+    color: inherit;
 }
 
 /* -------------    Product List    ------------- */
@@ -849,6 +889,7 @@ footer p {
 .card-view-btn {
     padding: 8px 0;
     width: 100%;
+    max-width: 1440px;
     font-size: clamp(0.75rem, 1.3vw, 0.9rem);
     font-family: 'Nunito', sans-serif;
     font-weight: 700;
@@ -908,7 +949,7 @@ footer p {
 }
 
 .product-card-info {
-    padding: 10px;
+    padding: 20px;
     text-align: left;
 }
 
@@ -919,6 +960,10 @@ footer p {
     margin: 4px 0;
     line-height: 1.3;
     text-align: left;
+}
+
+.product-card-info p {
+    margin: 0;
 }
 
 .product-card-info .price {
@@ -971,6 +1016,29 @@ footer p {
     flex-direction: column;
     justify-content: center;
 }
+
+/* Row layout when rendered via renderProductCard (img-link + card-right structure) */
+.product-card-row .product-card-img-link {
+    width: 140px;
+    min-width: 140px;
+    order: 2;
+    flex-shrink: 0;
+}
+
+.product-card-row .product-card-img-link .product-card-img {
+    width: 100%;
+    height: 100%;
+    order: unset;
+}
+
+.product-card-row .product-card-right {
+    order: 1;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 
 /* Divider between categories */
 .category-divider {
@@ -1329,12 +1397,54 @@ details p {
     margin: 0;
 }
 
-/* ------------- Shopping Cart ------------- */
-.cart-section {
-    padding: 20px 0;
+/* ------------- Product Detail: wide screen ------------- */
+@media (min-width: 768px) {
+    #Product-detail main {
+        max-width: 960px;
+    }
+
+    .detail-content {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 40px;
+        padding: 24px 0 28px;
+    }
+
+    .product-img {
+        flex: 0 0 44%;
+        height: 420px;
+    }
+
+    .product-info {
+        flex: 1;
+        gap: 14px;
+    }
+
+    .product-description {
+        margin: 0 0 4px;
+    }
+
+    .related-products {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .related-products h2 {
+        grid-column: 1 / -1;
+    }
+
+    .related-products .product-card-row {
+        margin: 0;
+    }
 }
 
-.cart-section h1 {
+/* ------------- Shopping Cart ------------- */
+.cart-section {
+    padding-bottom: 10px;
+}
+
+#cart-title {
     text-align: center;
     font-size: clamp(1.8rem, 3vw, 2.5rem);
     margin: 20px 0;
@@ -1344,7 +1454,7 @@ details p {
     display: flex;
     align-items: center;
     gap: 12px;
-    background: var(--white);
+    background: var(--cream);
     border-radius: 12px;
     padding: 12px;
     margin-bottom: 12px;
@@ -1357,8 +1467,11 @@ details p {
     flex-shrink: 0;
 }
 
-.cart-item-info {
+.cart-item-body {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .cart-item-info h3 {
@@ -1379,18 +1492,55 @@ details p {
     font-weight: 700;
 }
 
-.cart-item-actions {
+.cart-item-meta {
     display: flex;
-    flex-direction: column;
-    gap: 8px;
-    align-items: flex-end;
+    flex-direction: row;
+    gap: 12px;
 }
 
-.cart-item-actions a {
-    font-size: 0.8rem;
+.cart-item-actions {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+}
+
+.cart-item-actions button {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 5px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin: 0;
+    height: auto;
+    min-height: unset;
+    width: auto;
+    max-width: unset;
+    transition: background-color 0.15s, color 0.15s;
+}
+
+.cart-item-actions .edit-item {
+    background: transparent;
+    border: 1.5px solid var(--dark-beige);
+    color: var(--darkest-beige);
+}
+
+.cart-item-actions .edit-item:hover {
+    background: var(--darkest-beige);
+    color: var(--white);
+    border-color: var(--darkest-beige);
+}
+
+.cart-item-actions .remove-item {
+    background: transparent;
+    border: 1.5px solid var(--dark-beige);
     color: var(--dark-beige);
-    text-decoration: none;
-    font-family: 'Nunito', serif;
+}
+
+.cart-item-actions .remove-item:hover {
+    background: #c0392b;
+    color: var(--white);
+    border-color: #c0392b;
 }
 
 /* Order Summary */
@@ -1461,6 +1611,68 @@ details p {
 .recommended-section h2 {
     font-size: clamp(1.4rem, 2vw, 2rem);
     margin-bottom: 16px;
+}
+
+@media (min-width: 768px) {
+    #cart-page main {
+        max-width: 1440px;
+        margin: 0 auto;
+    }
+
+    .cart-body {
+        display: flex;
+        flex-direction: row;
+        gap: 24px;
+        align-items: flex-start;
+    }
+
+    .cart-section {
+        flex: 1;
+        padding-top: 0;
+        align-self: flex-start;
+        
+    }
+    .cart-item {
+        border-radius: 16px;
+    }
+
+    .cart-item-body {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .cart-item-body .cart-item-info {
+        flex: 1;
+    }
+
+    .cart-item-actions {
+        flex-direction: column;
+        align-items: flex-end;
+        flex-shrink: 0;
+        margin-left: auto;
+    }
+    .order-summary {
+        width: 320px;
+        margin: 0 auto;
+        padding-top: 0;
+
+    }
+
+    #recommended-section {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    #recommended-section h2 {
+        width: 100%;
+    }
+
+    #recommended-section article {
+        flex: 1 1 calc(50% - 6px);
+        margin: 0;
+    }
 }
 
 /* ------------- Payment Page ------------- */
