@@ -354,6 +354,7 @@ function initPaymentPage() {
   document.querySelector(".summary-badge").textContent = `${cart.length} item${cart.length !== 1 ? "s" : ""}`;
   document.getElementById("summary-items").innerHTML = cart.map((item) => `
     <div class="summary-item">
+      <img class="summary-item-img" src="${item.image}" alt="${item.name}">
       <div class="summary-item-info">
         <p class="summary-item-name">${item.name}</p>
         <p class="summary-item-detail">${item.variant} · x${item.quantity}</p>
@@ -416,6 +417,13 @@ function initPaymentPage() {
       }
     });
   }
+
+  // Show confirmation overlay on Place Order
+  document.getElementById("place-order").addEventListener("click", () => {
+    saveCart([]);
+    updateCartBadge();
+    document.getElementById("order-overlay").classList.remove("hidden");
+  });
 }
 
 /*-------------------------------------- Shopping Cart Page --------------------------------------*/
