@@ -634,7 +634,13 @@ footer p {
 
     .banner-cell {
         padding: 20px 24px;
-        gap: 10px;
+        gap: 14px;
+        flex-direction: row;
+        text-align: left;
+    }
+
+    .b-text {
+        align-self: center;
     }
 
     .b-icon {
