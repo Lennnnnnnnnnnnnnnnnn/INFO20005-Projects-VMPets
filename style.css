@@ -911,6 +911,11 @@ menu a {
     background: var(--darkest-beige);
     color: var(--white);
     border: none;
+    transition: background-color 0.15s;
+}
+
+.card-add-btn:hover {
+    background: var(--dark-beige);
 }
 
 .card-view-btn {
@@ -933,12 +938,13 @@ menu a {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.08s;
 }
 
 .product-card:hover .product-card-img img {
-    position: relative;
-    z-index: 1;
+    transform: scale(1.05);
 }
+
 
 .sale-badge {
     position: absolute;
@@ -1446,6 +1452,10 @@ details p {
 }
 
 /* ------------- Shopping Cart ------------- */
+#cart-page main {
+    padding-top: 20px;
+}
+
 .cart-section {
     padding-bottom: 10px;
 }
@@ -1527,7 +1537,7 @@ details p {
 
 .cart-item-actions .edit-item {
     background: transparent;
-    border: 1.5px solid var(--dark-beige);
+    border: 1.5px solid var(--darkest-beige);
     color: var(--darkest-beige);
 }
 
@@ -1539,8 +1549,8 @@ details p {
 
 .cart-item-actions .remove-item {
     background: transparent;
-    border: 1.5px solid var(--dark-beige);
-    color: var(--dark-beige);
+    border: 1.5px solid #c0392b;
+    color: #c0392b;
 }
 
 .cart-item-actions .remove-item:hover {
@@ -1724,7 +1734,7 @@ details p {
 
 /* White card sections */
 .payment-card {
-    background: var(--white);
+    background: var(--cream);
     border-radius: 16px;
     padding: 20px;
     margin-bottom: 16px;
@@ -1854,12 +1864,12 @@ details p {
 }
 
 .form-group input {
-    border: 1.5px solid var(--cream);
+    border: 1.5px solid var(--white);
     border-radius: 10px;
     padding: 10px 12px;
     font-family: 'Nunito', sans-serif;
     font-size: 0.9rem;
-    background: var(--cream);
+    background: var(--white);
     color: var(--darkest-beige);
     outline: none;
     box-sizing: border-box;
@@ -1964,14 +1974,14 @@ details p {
 }
 
 .back-link a {
-    color: var(--dark-beige);
+    color: var(--darkest-beige);
     text-decoration: none;
     font-family: 'Nunito', sans-serif;
     font-weight: 600;
 }
 
 .back-link a:hover {
-    color: var(--darkest-beige);
+    color: var(--dark-beige);
 }
 
 /* ------------- Order Confirmation Overlay ------------- */

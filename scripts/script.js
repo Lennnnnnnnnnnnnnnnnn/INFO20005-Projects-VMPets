@@ -122,7 +122,7 @@ function initHeader() {
                     <img id="search-icon" src="images/icons/Search.svg" alt="Search button">
                 </a>
                 <a href="shopping_cart.html" class="cart-icon-wrapper">
-                    <img id="cart-icon" src="images/icons/cart.svg" alt="Cart button">
+                    <img id="cart-icon" src="images/icons/Cart.svg" alt="Cart button">
                     <span id="cart-badge" class="hidden"></span>
                 </a>
             </div>
@@ -371,6 +371,8 @@ function initPaymentPage() {
   const cardFields = document.getElementById("card-fields");
   const paypalFields = document.getElementById("paypal-fields");
 
+  const cardInputs = cardFields.querySelectorAll("input[required]");
+
   // Attach a click listener to every tab button
   tabs.forEach((tab) => {
     tab.addEventListener("click", () => {
@@ -383,9 +385,11 @@ function initPaymentPage() {
       if (tab.dataset.method === "card") {
         cardFields.classList.remove("payment-hidden");
         paypalFields.classList.add("payment-hidden");
+        cardInputs.forEach((input) => input.setAttribute("required", ""));
       } else {
         cardFields.classList.add("payment-hidden");
         paypalFields.classList.remove("payment-hidden");
+        cardInputs.forEach((input) => input.removeAttribute("required"));
       }
     });
   });
@@ -418,8 +422,13 @@ function initPaymentPage() {
     });
   }
 
-  // Show confirmation overlay on Place Order
-  document.getElementById("place-order").addEventListener("click", () => {
+  // Show confirmation overlay on Place Order (only if form is valid)
+  document.getElementById("checkout-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (!e.target.checkValidity()) {
+      e.target.reportValidity();
+      return;
+    }
     saveCart([]);
     updateCartBadge();
     document.getElementById("order-overlay").classList.remove("hidden");
