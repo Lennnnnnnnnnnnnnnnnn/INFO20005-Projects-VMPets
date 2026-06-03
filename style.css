@@ -4,7 +4,7 @@
     --light-beige: rgba(192, 175, 159, 1);
     --cream: rgb(235, 223, 205);
     --dark-beige: rgba(170, 143, 122, 1);
-    --sub-texts: rgb(105, 88, 74);
+    --sub-texts: rgb(78, 67, 58);
     --darkest-beige: rgba(74, 55, 40, 1);
     --black: rgba(10, 10, 10, 1);
     --light-orange: rgba(255, 220, 180, 0.92);
@@ -27,7 +27,7 @@ header {
 
 main {
     flex: 1;
-    padding: 0 20px;
+    padding: 0 20px 48px;
 }
 
 h1,
@@ -336,13 +336,17 @@ footer p {
 
 /* -------------    HOME    ------------- */
 
+#Home main {
+    padding-bottom: 0;
+}
+
 /* Hero Section */
 #Home #hero-section {
     background: linear-gradient(to bottom,
             rgba(30, 18, 10, 0.35) 0%,
             rgba(30, 18, 10, 0.55) 65%,
             rgba(20, 12, 6, 1) 100%),
-        url('images/Dog_Cat_warm_color.jpg');
+        url('images/backgrounds/Dog_Cat_warm_color.jpg');
     background-size: cover;
     background-position: center;
     margin: 0 -20px;
@@ -357,10 +361,6 @@ footer p {
     position: relative;
 }
 
-#hero-section h1,
-#hero-section h3 {
-    color: var(--white);
-}
 
 #hero-section h1 {
     font-size: clamp(2.5rem, 3vw, 5rem);
@@ -416,11 +416,11 @@ footer p {
 }
 
 .category-card.view-dogs {
-    background-image: url('images/category_card_dog.png');
+    background-image: url('images/backgrounds/category_card_dog.png');
 }
 
 .category-card.view-cats {
-    background-image: url('images/category_card_cat.png');
+    background-image: url('images/backgrounds/category_card_cat.png');
 }
 
 .card-tag {
@@ -556,7 +556,7 @@ footer p {
     #Home main {
         width: 100%;
         margin: 0 auto;
-        padding: 0 60px;
+        padding: 0 60px 48px;
         box-sizing: border-box;
     }
 
@@ -570,7 +570,7 @@ footer p {
                 rgba(20, 12, 6, 0.78) 38%,
                 rgba(20, 12, 6, 0.28) 62%,
                 rgba(20, 12, 6, 0.00) 100%),
-            url('images/Dog_Cat_warm_color.jpg');
+            url('images/backgrounds/Dog_Cat_warm_color.jpg');
         background-size: cover;
         background-position: center;
         align-items: flex-start;
@@ -587,7 +587,7 @@ footer p {
     }
 
     #Home #hero-section h3 {
-        font-size: clamp(1.8rem, 2.5vw, 3rem);
+        font-size: clamp(2rem, 2.5vw, 3rem);
         text-align: left;
         margin-left: 0;
         margin-right: 0;
@@ -818,7 +818,7 @@ menu a {
 }
 
 .product-count {
-    font-size: 11px;
+    font-size: 13px;
     color: var(--sub-texts);
 }
 
@@ -1067,7 +1067,7 @@ menu a {
         max-width: 1440px;
         width: 100%;
         margin: 0 auto;
-        padding: 0 60px;
+        padding: 0 60px 48px;
         box-sizing: border-box;
     }
 
@@ -1224,7 +1224,7 @@ menu a {
 
 .size {
     margin: 0;
-    font-size: 12px;
+    font-size: 13px;
     color: var(--black);
     font-family: 'Nunito', sans-serif;
 }
@@ -1239,7 +1239,6 @@ menu a {
     flex: 1;
     border-radius: 10px;
     padding: 10px 6px;
-    font-size: 13px;
     font-weight: 600;
     text-align: center;
 }
@@ -1247,7 +1246,7 @@ menu a {
 /* ── Button base override ── */
 #Product-detail button {
     font-family: 'Nunito', sans-serif;
-    font-size: 12px;
+    font-size: 13px;
     padding: 6px 13px;
     height: auto;
     min-height: unset;
@@ -1499,7 +1498,7 @@ details p {
 
 .cart-item-info p {
     font-size: 0.85rem;
-    color: var(--dark-beige);
+    color: var(--sub-texts);
     margin: 2px 0;
 }
 
@@ -1570,7 +1569,7 @@ details p {
 
 .items-selected {
     font-size: 0.9rem;
-    color: var(--dark-beige);
+    color: var(--sub-texts);
     margin-bottom: 12px;
 }
 
@@ -1608,14 +1607,16 @@ details p {
 }
 
 .checkout-btn {
+    display: block;
     width: 100%;
+    max-width: 100%;
     background: var(--darkest-beige);
     color: var(--white);
     border-radius: 50px;
     font-size: 1rem;
     font-weight: 700;
     height: 48px;
-    margin-top: 16px;
+    margin: 16px auto 0;
 }
 
 /* Recommended Products */
@@ -1633,6 +1634,8 @@ details p {
     #cart-page main {
         max-width: 1440px;
         margin: 0 auto;
+        padding: 20px 40px 48px;
+        box-sizing: border-box;
     }
 
     .cart-body {
@@ -1688,6 +1691,12 @@ details p {
     #recommended-section article {
         flex: 1 1 calc(50% - 6px);
         margin: 0;
+    }
+}
+
+@media (min-width: 1024px) {
+    #cart-page main {
+        padding: 20px 60px 48px;
     }
 }
 
