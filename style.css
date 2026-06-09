@@ -185,7 +185,7 @@ nav a:visited {
     .nav-links {
         display: flex;
         align-items: center;
-        gap: 36px;
+        gap: 24px;
         flex: 1;
         justify-content: center;
     }
@@ -200,8 +200,64 @@ nav a:visited {
         transition: color 0.15s;
     }
 
-    .nav-links a:hover {
+    .nav-links > a:hover {
         color: var(--darkest-beige);
+    }
+
+    /* Dropdown */
+    .nav-dropdown {
+        position: relative;
+        align-self: stretch;
+        display: flex;
+        align-items: center;
+    }
+
+    .nav-dropdown > a::after {
+        content: ' ▾';
+        font-size: 10px;
+        opacity: 0.7;
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-6px);
+        background: var(--darkest-beige);
+        border-radius: 12px;
+        padding: 6px 0;
+        min-width: 190px;
+        display: flex;
+        flex-direction: column;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s, transform 0.2s;
+        z-index: 50;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+    }
+
+    .nav-dropdown:hover .dropdown-menu {
+        opacity: 1;
+        pointer-events: all;
+        transform: translateX(-50%) translateY(0);
+    }
+
+    .dropdown-menu a,
+    .dropdown-menu a:visited {
+        font-family: 'Nunito', sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--white);
+        padding: 10px 18px;
+        text-decoration: none;
+        transition: background 0.15s, padding-left 0.15s;
+        letter-spacing: 0.01em;
+    }
+
+    .dropdown-menu a:hover {
+        background: rgba(255, 255, 255, 0.1);
+        padding-left: 24px;
+        color: var(--white);
     }
 
     .nav-menu-link {
@@ -400,6 +456,15 @@ footer p {
     margin-bottom: 30px;
 }
 
+#Home .product-containers {
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#Home .category-card {
+    flex: 0 0 calc(50% - 10px);
+}
+
 .category-card {
     position: relative;
     border-radius: 20px;
@@ -421,6 +486,14 @@ footer p {
 
 .category-card.view-cats {
     background-image: url('images/backgrounds/category_card_cat.png');
+}
+
+.category-card.view-birds {
+    background-image: url('images/backgrounds/category_card_bird.jpg');
+}
+
+.category-card.view-small-animals {
+    background-image: url('images/backgrounds/category_card_small_animal.jpg');
 }
 
 .card-tag {
@@ -483,6 +556,13 @@ footer p {
     flex-shrink: 0;
     margin-top: 0;
     height: auto;
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+
+.category-card button:hover {
+    background: var(--darkest-beige);
+    color: var(--white);
+    transform: scale(1.08);
 }
 
 /* Home Banner */
@@ -541,6 +621,136 @@ footer p {
     color: #777;
     margin: 0;
     line-height: 1.3;
+}
+
+/* Home Stats */
+
+#home-stats {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+    background: var(--cream);
+    border-radius: 20px;
+    padding: 28px 16px;
+    margin-bottom: 40px;
+    gap: 8px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+
+.stat-item + .stat-item {
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.stat-number {
+    font-family: 'Asul', sans-serif;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 700;
+    color: var(--darkest-beige);
+    margin: 0;
+    line-height: 1;
+}
+
+.stat-label {
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(0.65rem, 1.2vw, 0.8rem);
+    color: var(--sub-texts);
+    margin: 6px 0 0;
+    line-height: 1.2;
+}
+
+/* Featured Products */
+
+#featured-section h2 {
+    margin-top: 0;
+}
+
+.featured-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 40px;
+}
+
+#featured-section .product-card-img {
+    height: 150px;
+}
+
+#featured-section .product-card-info {
+    padding: 14px 16px;
+}
+
+#featured-section .product-card-info h3 {
+    font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+    margin: 0 0 4px;
+}
+
+/* Testimonials */
+
+#testimonials h2 {
+    margin-top: 0;
+}
+
+.testimonials-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 40px;
+}
+
+.testimonial-card {
+    background: var(--cream);
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.testimonial-text {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.9rem;
+    color: var(--sub-texts);
+    line-height: 1.6;
+    margin: 0 0 14px;
+    font-style: italic;
+}
+
+.testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.testimonial-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--dark-beige);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.testimonial-name {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--darkest-beige);
+    margin: 0;
+    line-height: 1;
+}
+
+.testimonial-stars {
+    font-size: 0.75rem;
+    color: #d4a017;
+    margin: 4px 0 0;
+    line-height: 1;
 }
 
 .home-image-end {
@@ -610,13 +820,12 @@ footer p {
     }
 
     #Home .product-containers {
-        flex-direction: row;
         gap: 28px;
     }
 
     #Home .category-card {
         height: 340px;
-        flex: 1;
+        flex: 0 0 calc(50% - 14px);
     }
 
     #Home .category-card h3 {
@@ -630,6 +839,19 @@ footer p {
 
     #Home #home-banner {
         margin: 0 -60px;
+    }
+
+    #Home .featured-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    #Home .testimonials-grid {
+        flex-direction: row;
+        gap: 20px;
+    }
+
+    #Home .testimonial-card {
+        flex: 1;
     }
 
     .banner-cell {

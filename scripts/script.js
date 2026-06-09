@@ -99,6 +99,34 @@ const products = {
 
 // FUNCTIONS ---------------------------------------------------------------------------------
 
+/*-------------------------------------- Home Featured --------------------------------------*/
+
+function initHomeFeatured() {
+  const grid = document.getElementById("featured-grid");
+  if (!grid) return;
+
+  const picks = [
+    { category: "dogs", index: 0 },
+    { category: "dogs", index: 2 },
+    { category: "cats", index: 0 },
+    { category: "cats", index: 2 },
+  ];
+
+  grid.innerHTML = picks
+    .map(({ category, index }) => renderProductCard(products[category][index], category, index))
+    .join("");
+
+  grid.addEventListener("click", (e) => {
+    const btn = e.target.closest(".card-add-btn");
+    if (!btn) return;
+    const href = btn.closest("article").querySelector(".card-view-btn").getAttribute("href");
+    const params = new URLSearchParams(href.split("?")[1]);
+    const cat = params.get("category");
+    const idx = parseInt(params.get("index"));
+    addToCart(cat, idx, products[cat][idx].variants[0], 1);
+  });
+}
+
 /*-------------------------------------- Header & Footer--------------------------------------*/
 
 // Injects the shared nav into every page's <header>.
@@ -109,10 +137,41 @@ function initHeader() {
                 <p class="brand-logo">VM Pet Shop</p>
             </a>
             <div class="nav-links">
-                <a href="product_list.html?category=dogs">Dogs</a>
-                <a href="product_list.html?category=cats">Cats</a>
+                <div class="nav-dropdown">
+                    <a href="product_list.html?category=dogs">Dogs</a>
+                    <div class="dropdown-menu">
+                        <a href="product_list.html?category=dogs">Dry Food</a>
+                        <a href="#">Wet Food</a>
+                        <a href="#">Treats &amp; Snacks</a>
+                    </div>
+                </div>
+                <div class="nav-dropdown">
+                    <a href="product_list.html?category=cats">Cats</a>
+                    <div class="dropdown-menu">
+                        <a href="product_list.html?category=cats">Dry Food &amp; Wet Food</a>
+                        <a href="#">Treats &amp; Snacks</a>
+                        <a href="#">Litter &amp; Accessories</a>
+                    </div>
+                </div>
+                <div class="nav-dropdown">
+                    <a href="#">Birds</a>
+                    <div class="dropdown-menu">
+                        <a href="#">Seeds &amp; Pellets</a>
+                        <a href="#">Treats</a>
+                        <a href="#">Accessories</a>
+                    </div>
+                </div>
+                <div class="nav-dropdown">
+                    <a href="#">Small Animals</a>
+                    <div class="dropdown-menu">
+                        <a href="#">Food &amp; Pellets</a>
+                        <a href="#">Bedding</a>
+                        <a href="#">Toys &amp; Accessories</a>
+                    </div>
+                </div>
                 <a href="on_sale.html">On Sale</a>
                 <a href="#">Top Selling</a>
+                <a href="#">New Arrivals</a>
             </div>
             <div class="nav-icons">
                 <a href="menu.html" class="nav-menu-link">
@@ -701,4 +760,8 @@ if (document.body.id === "Product-list") {
 
 if (document.body.id === "on-sale-page") {
   initOnSalePage();
+}
+
+if (document.body.id === "Home") {
+  initHomeFeatured();
 }
