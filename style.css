@@ -10,6 +10,7 @@
     --light-orange: rgba(255, 220, 180, 0.92);
 }
 
+/* makes the page tall enough so the footer always sits at the bottom, not floating mid-page */
 body {
     margin: 0;
     background-color: var(--light-beige);
@@ -19,12 +20,14 @@ body {
     overflow-x: hidden;
 }
 
+/* sticks the nav to the top when scrolling — z-index 10 keeps it on top of everything else */
 header {
     position: sticky;
     top: 0;
     z-index: 10;
 }
 
+/* stretches main to fill whatever space is left between the nav and footer */
 main {
     flex: 1;
     padding: 0 20px 48px;
@@ -87,7 +90,8 @@ button {
     gap: 20px;
 }
 
-/* Gradient overlay for category and product cards */
+/* adds a dark tint over the card background image so the text is easier to read
+   — the text and buttons sit above this using z-index: 2 */
 .category-card::before,
 .product-card-img::before {
     content: '';
@@ -129,11 +133,13 @@ nav p {
     cursor: pointer;
 }
 
+/* needed so the badge knows to position itself relative to this icon, not the whole page */
 .cart-icon-wrapper {
     position: relative;
     display: inline-flex;
 }
 
+/* floats the badge over the cart icon — pointer-events: none means clicking it still clicks the cart link underneath */
 #cart-badge {
     position: absolute;
     bottom: -3px;
@@ -162,6 +168,7 @@ nav a {
     color: inherit;
 }
 
+/* stops links from turning purple after you've clicked them */
 nav a:visited {
     color: inherit;
 }
@@ -205,6 +212,8 @@ nav a:visited {
     }
 
     /* Dropdown */
+
+    /* stretches to the full nav bar height so the dropdown appears right at the bottom of the nav */
     .nav-dropdown {
         position: relative;
         align-self: stretch;
@@ -212,12 +221,15 @@ nav a:visited {
         align-items: center;
     }
 
+    /* adds the little ▾ arrow after the link text without touching the HTML */
     .nav-dropdown > a::after {
         content: ' ▾';
         font-size: 10px;
         opacity: 0.7;
     }
 
+    /* hidden with opacity so the slide animation still works (display:none would skip it)
+       — starts slightly above and slides down into place on hover */
     .dropdown-menu {
         position: absolute;
         top: 100%;
@@ -236,12 +248,15 @@ nav a:visited {
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
     }
 
+    /* moving the mouse into the menu itself keeps it open, not just hovering the link */
     .nav-dropdown:hover .dropdown-menu {
         opacity: 1;
         pointer-events: all;
         transform: translateX(-50%) translateY(0);
     }
 
+    /* :visited is also targeted here, otherwise the browser's visited-link rule
+       would win and make already-clicked links go black inside the dropdown */
     .dropdown-menu a,
     .dropdown-menu a:visited {
         font-family: 'Nunito', sans-serif;
@@ -277,7 +292,8 @@ nav a:visited {
 }
 
 
-/* Cart notification toast */
+/* the "item added" popup that shows just under the nav — hidden with opacity
+   instead of display:none so the fade animation still works */
 #cart-notification {
     position: fixed;
     top: 60px;
@@ -296,6 +312,7 @@ nav a:visited {
     transition: opacity 0.3s ease;
 }
 
+/* JS adds this to show the toast, then removes it to hide it again */
 #cart-notification.show {
     opacity: 1;
 }
@@ -397,6 +414,9 @@ footer p {
 }
 
 /* Hero Section */
+
+/* dark gradient over the hero photo so the text is always readable
+   — negative margin lets it stretch past the page padding to go full width */
 #Home #hero-section {
     background: linear-gradient(to bottom,
             rgba(30, 18, 10, 0.35) 0%,
@@ -456,11 +476,13 @@ footer p {
     margin-bottom: 30px;
 }
 
+/* makes cards wrap into 2 columns instead of stacking in one long column */
 #Home .product-containers {
     flex-direction: row;
     flex-wrap: wrap;
 }
 
+/* each card takes just under half the width — subtracting 10px leaves room for the gap between them */
 #Home .category-card {
     flex: 0 0 calc(50% - 10px);
 }
@@ -567,6 +589,7 @@ footer p {
 
 /* Home Banner */
 
+/* negative margin pulls the banner past the page padding so it goes edge to edge */
 #home-banner {
     display: flex;
     align-items: stretch;
@@ -588,7 +611,7 @@ footer p {
     text-align: center;
 }
 
-/* Divider between cells */
+/* the + means "a cell right after another cell" — only puts a divider between cells, not before the first one */
 .banner-cell+.banner-cell {
     border-left: 1px solid rgba(0, 0, 0, 0.08);
 }
@@ -770,11 +793,11 @@ footer p {
         box-sizing: border-box;
     }
 
+    /* on desktop, dark on the left where the text is, fading out so the photo comes through on the right */
     #Home #hero-section {
         height: 88vh;
         margin: 0 -60px;
         padding: 0 80px;
-        /* directional gradient: dark left for text readability, clear right for image */
         background: linear-gradient(to right,
                 rgba(20, 12, 6, 0.92) 0%,
                 rgba(20, 12, 6, 0.78) 38%,
@@ -823,6 +846,7 @@ footer p {
         gap: 28px;
     }
 
+    /* same idea as mobile but the gap is bigger on desktop so we subtract a bit more */
     #Home .category-card {
         height: 340px;
         flex: 0 0 calc(50% - 14px);
@@ -1163,6 +1187,7 @@ menu a {
     transition: transform 0.08s;
 }
 
+/* zooms the photo when you hover over the card */
 .product-card:hover .product-card-img img {
     transform: scale(1.05);
 }
@@ -1397,6 +1422,8 @@ menu a {
 }
 
 /* ── Image zoom overlay ── */
+/* dark backdrop that appears when you click a product image to zoom in
+   — hidden with opacity so the fade-in still animates when JS adds .active */
 #img-overlay {
     position: fixed;
     inset: 0;
@@ -1588,6 +1615,7 @@ details:last-child {
     border-bottom: none;
 }
 
+/* hides the default browser arrow on <details> — two rules below because older browsers use a different name for it */
 details summary {
     font-weight: 700;
     font-size: 16px;
@@ -1610,6 +1638,8 @@ details summary::marker {
     display: none;
 }
 
+/* shows + when collapsed and - when open — the browser automatically adds/removes
+   [open] on the element when you click it, and the content just swaps */
 details summary::after {
     content: '+';
     font-size: 20px;
@@ -1950,6 +1980,8 @@ details p {
         flex: 1;
     }
 
+    /* keeps the order summary in view while you scroll the checkout form
+       — top: 80px stops it from hiding behind the sticky nav bar */
     .payment-right {
         flex: 0 0 360px;
         position: sticky;

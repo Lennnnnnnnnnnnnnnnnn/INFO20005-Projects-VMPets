@@ -101,6 +101,7 @@ const products = {
 
 /*-------------------------------------- Home Featured --------------------------------------*/
 
+// shows a few selected products on the home page using the same card layout as the product list
 function initHomeFeatured() {
   const grid = document.getElementById("featured-grid");
   if (!grid) return;
@@ -116,6 +117,7 @@ function initHomeFeatured() {
     .map(({ category, index }) => renderProductCard(products[category][index], category, index))
     .join("");
 
+  // one click listener on the whole grid catches "Add to Cart" clicks from all cards at once
   grid.addEventListener("click", (e) => {
     const btn = e.target.closest(".card-add-btn");
     if (!btn) return;
@@ -227,6 +229,8 @@ if (document.body.id === "menu-page") {
 
 /*-------------------------------------- Product List--------------------------------------*/
 
+// Reads the ?category= query param to decide which product list to show,
+// then renders all products for that category into the grid.
 function initProductList() {
   const grid = document.getElementById("product-grid");
   if (!grid) return;
@@ -242,6 +246,8 @@ function initProductList() {
     .map((p, i) => renderProductCard(p, category, i))
     .join("");
 
+  // Event delegation: one listener on the grid handles all "Add to Cart" clicks.
+  // It reads category/index from the sibling "View Product" href to identify the product.
   grid.addEventListener("click", (e) => {
     const btn = e.target.closest(".card-add-btn");
     if (!btn) return;
@@ -325,6 +331,9 @@ function initImageZoom() {
 }
 
 
+// Populates the product detail page from the products data object using
+// ?category= and ?index= query params. Optional chaining on products[category]?.[index]
+// guards against invalid URLs without throwing an error.
 function initProductDetail() {
   const params = new URLSearchParams(window.location.search);
   const category = params.get("category");
@@ -345,7 +354,8 @@ function initProductDetail() {
   if (sizeLabel)
     sizeLabel.textContent = product.variants[product.variants.length - 1];
 
-  // Variant buttons
+  // Variant buttons — the last variant gets the "active" class by default
+  // so the largest size is pre-selected when the page loads
   const variantsDiv = document.querySelector(".product-variants");
   variantsDiv.innerHTML = product.variants
     .map((v, i) => {
@@ -364,7 +374,8 @@ function initProductDetail() {
   if (details[1])
     details[1].querySelector("p").textContent = product.description;
 
-  // Related products (up to 2 others in same category)
+  // Related products: map preserves original indices, filter removes the current product,
+  // slice caps the result at 2 cards regardless of category size
   const relatedSection = document.querySelector(".related-products");
   const related = products[category]
     .map((p, i) => ({ product: p, index: i }))
@@ -496,6 +507,8 @@ function initPaymentPage() {
 
 /*-------------------------------------- Shopping Cart Page --------------------------------------*/
 
+// Renders cart items from localStorage, wires up Edit/Remove buttons,
+// and populates the recommended products section.
 function initCartPage() {
   const cart = getCart();
   const cartSection = document.querySelector(".cart-section");
@@ -517,6 +530,8 @@ function initCartPage() {
 
   if (cartTitle) cartTitle.textContent = `Total: ${cart.length} item${cart.length !== 1 ? "s" : ""}`;
 
+  // data-index stores the cart array position (i), not the product index,
+  // so the Remove handler can splice the right entry from the cart array
   cartSection.innerHTML =
     cart.map((item, i) => `
       <article class="cart-item">
@@ -547,6 +562,7 @@ function initCartPage() {
 
   cartSection.querySelectorAll(".remove-item").forEach((btn) => {
     btn.addEventListener("click", () => {
+      // Re-read from storage so we always operate on the latest cart state
       const updated = getCart();
       updated.splice(parseInt(btn.dataset.index), 1);
       saveCart(updated);
@@ -559,7 +575,8 @@ function initCartPage() {
     window.location.href = "payment.html";
   });
 
-  // Recommended: 2 products not already in cart
+  // Build a set of "category-index" strings for fast membership checks,
+  // then walk all products and collect up to 2 that aren't already in the cart
   const cartIndices = cart.map((i) => `${i.category}-${i.index}`);
   const recommended = [];
   for (const [category, list] of Object.entries(products)) {
@@ -588,6 +605,9 @@ function initCartPage() {
   });
 }
 
+// Shared card renderer used by the product list, on-sale, cart recommended,
+// and home featured sections. row=true switches to horizontal layout;
+// buttons=false omits the "View Product" / "Add to Cart" row (e.g. related products).
 function renderProductCard(product, category, index, row = false, buttons = true) {
   const saleBadge = product.sale ? `<span class="sale-badge">SALE</span>` : "";
   const originalPrice = product.originalPrice
@@ -623,6 +643,8 @@ function renderProductCard(product, category, index, row = false, buttons = true
 
 /*-------------------------------------- On Sale --------------------------------------*/
 
+// Flattens all categories into a single sale list, then re-renders it
+// on sort changes without a page reload.
 function initOnSalePage() {
   const grid = document.getElementById("product-grid");
   if (!grid) return;
@@ -669,6 +691,8 @@ function initOnSalePage() {
 /*-------------------------------------- Cart Storage --------------------------------------*/
 
 // Shows a 2-second notification under the nav confirming the item was added
+// Sums all item quantities (not just item count) so the badge reflects
+// the total number of units in the cart, not the number of distinct products.
 function updateCartBadge() {
   const badge = document.getElementById("cart-badge");
   if (!badge) return;
@@ -702,6 +726,8 @@ function saveCart(cart) {
   localStorage.setItem("cart", JSON.stringify(cart)); // save js cart arrays into localStorage strings
 }
 
+// Adds a product to the cart. If the same product+variant already exists,
+// the quantity is merged rather than creating a duplicate entry.
 function addToCart(category, index, variant, quantity) {
   const product = products[category][index];
   const cart = getCart();
